@@ -1,0 +1,44 @@
+services:
+  user-service:
+    build: 
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - DATABASE_URL=sqlite:///users.db
+    networks:
+      - app-network
+
+  message-service:
+    build: 
+      context: ./message-service
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5000"
+    environment:
+      - DATABASE_URL=sqlite:///messages.db
+    networks:
+      - app-network
+
+  feed-service:
+    build: 
+      context: ./feed-service
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5000"
+    networks:
+      - app-network
+
+  cli-service:
+    build: 
+      context: ./cli-service
+      dockerfile: Dockerfile
+    ports:
+      - "5004:5000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
