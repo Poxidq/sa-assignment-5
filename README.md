@@ -33,4 +33,8 @@ Flags:
   -h, --help   help for cli-service
 
 Use "cli-service [command] --help" for more information about a command.
+
+
+# OR 
+docker exec -it <cli-service-container-id> /bin/sh
 ```

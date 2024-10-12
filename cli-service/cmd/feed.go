@@ -22,7 +22,7 @@ var feedCmd = &cobra.Command{
 		if len(feed) > 0 {
 			fmt.Println("Latest 10 messages:")
 			for _, message := range feed {
-				fmt.Printf("User: %s\nMessage: %s\n\n", message.Username, message.Content)
+				fmt.Printf("ID: %d | User: %s | Likes: %d\nMessage: %s\n\n", message.ID, message.Username, message.Likes, message.Content)
 			}
 		} else {
 			fmt.Println("No messages found.")

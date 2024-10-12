@@ -30,3 +30,7 @@ var postCmd = &cobra.Command{
 		}
 	},
 }
+
+func init() {
+	rootCmd.AddCommand(postCmd)
+}
