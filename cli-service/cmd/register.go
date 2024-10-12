@@ -13,7 +13,9 @@ var registerCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		username := args[0]
-		response, error := internal.RegisterUser(username)
+
+		client := internal.NewAPIClient()
+		response, error := client.RegisterUser(username)
 		if error != nil {
 			fmt.Printf("Cannot register user.\n")
 			panic(error)

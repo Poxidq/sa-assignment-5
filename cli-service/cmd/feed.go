@@ -11,11 +11,12 @@ var feedCmd = &cobra.Command{
 	Use:   "feed",
 	Short: "Get the latest 10 messages",
 	Run: func(cmd *cobra.Command, args []string) {
-		feed, error := internal.GetFeed()
+		client := internal.NewAPIClient()
+		feed, err := client.GetFeed()
 
-		if error != nil {
-			fmt.Printf("Cannot register user.\n")
-			panic(error)
+		if err != nil {
+			fmt.Printf("Error retrieving the feed: %v\n", err)
+			return
 		}
 
 		if len(feed) > 0 {

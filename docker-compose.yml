@@ -7,6 +7,9 @@ services:
       - "5001:5000"
     environment:
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/${POSTGRES_DB}
+    depends_on:
+      database-service:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -17,20 +20,26 @@ services:
     ports:
       - "5002:5000"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/twitterdb
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/{POSTGRES_DB}
     depends_on:
-      - database-service
+      database-service:
+        condition: service_healthy
     networks:
       - app-network
 
-  # feed-service:
-  #   build:
-  #     context: ./feed-service
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "5003:5000"
-  #   networks:
-  #     - app-network
+  feed-service:
+    build:
+      context: ./feed-service
+      dockerfile: Dockerfile
+    ports:
+      - "5003:5000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/${POSTGRES_DB}
+    depends_on:
+      database-service:
+        condition: service_healthy
+      networks:
+        - app-network
 
   database-service:
     build:
@@ -46,7 +55,9 @@ services:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 1s
       timeout: 5s
-      retries: 5
+      retries: 20
+    networks:
+      - app-network
 
   cli-service:
     build:
@@ -56,14 +67,18 @@ services:
       BASE_URL_USER_MANAGEMENT: http://user-service:5000
       BASE_URL_MESSAGES: http://message-service:5000
       BASE_URL_FEED: http://feed-service:5000
-    networks:
-      - app-network
     entrypoint: [ "/app/cli-service" ]
     depends_on:
-      - database-service
-      - user-service
-      - message-service
+      database-service:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+      message-service:
+        condition: service_started
       # - feed-service
+      #  condition: service_started
+    networks:
+      - app-network
 
 networks:
   app-network:

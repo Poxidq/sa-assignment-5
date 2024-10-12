@@ -8,12 +8,6 @@ import (
 	"os"
 )
 
-const (
-	BaseURLUserManagement = "http://localhost:5001"
-	BaseURLMessages       = "http://localhost:5002"
-	BaseURLFeed           = "http://localhost:5003"
-)
-
 type Message struct {
 	Username string `json:"username"`
 	Content  string `json:"content"`
@@ -22,7 +16,7 @@ type Message struct {
 type APIClient struct {
 	BaseURLUserManagement string
 	BaseURLMessages       string
-	BaseURLFeed           string
+	BaseURLFeed           string // Feed-service URL for last 10 messages
 }
 
 func NewAPIClient() *APIClient {
@@ -65,6 +59,7 @@ func (client *APIClient) CreateMessage(username, content string) (*http.Response
 	return response, nil
 }
 
+// Fetch the last 10 messages from the feed-service
 func (client *APIClient) GetFeed() ([]Message, error) {
 	url := fmt.Sprintf("%s/feed", client.BaseURLFeed)
 	response, err := http.Get(url)
