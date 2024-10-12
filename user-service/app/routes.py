@@ -27,8 +27,8 @@ def login_user(username: str, db: Session = Depends(get_db)):
     
     return {"username": username}
 
-@app.get("/me")
-def get_me(username: str, db: Session = Depends(get_db)):
+@app.get("/users/{username}", status_code=200)
+def get_user(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     
     if not user:
