@@ -30,17 +30,38 @@ services:
   #   networks:
   #     - app-network
 
-  cli-service:
+  database-service:
     build:
+      context: ./database-service
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
+  cli-service:
+    build: 
       context: ./cli-service
       dockerfile: Dockerfile
+    environment:
+      BASE_URL_USER_MANAGEMENT: http://user-service:5000
+      BASE_URL_MESSAGES: http://message-service:5000
+      BASE_URL_FEED: http://feed-service:5000
     networks:
       - app-network
-    entrypoint: [ "/app/cli-service" ]
-    # depends_on:
-    #   - user-service
-    #   - message-service
-    #   - feed-service
+    entrypoint: ["/app/cli-service"]
+    depends_on:
+      - database-service
+      - user-service
+      - message-service
+      - feed-service
 
 networks:
   app-network:
