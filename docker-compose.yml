@@ -1,14 +1,14 @@
 services:
-  # user-service:
-  #   build:
-  #     context: ./user-service
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "5001:5000"
-  #   environment:
-  #     - DATABASE_URL=sqlite:///users.db
-  #   networks:
-  #     - app-network
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/${POSTGRES_DB}
+    networks:
+      - app-network
 
   # message-service:
   #   build:
