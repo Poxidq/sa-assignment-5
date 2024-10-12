@@ -1,36 +1,34 @@
-version: '3.8'
-
 services:
-  user-service:
-    build:
-      context: ./user-service
-      dockerfile: Dockerfile
-    ports:
-      - "5001:5000"
-    environment:
-      - DATABASE_URL=sqlite:///users.db
-    networks:
-      - app-network
+  # user-service:
+  #   build:
+  #     context: ./user-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5001:5000"
+  #   environment:
+  #     - DATABASE_URL=sqlite:///users.db
+  #   networks:
+  #     - app-network
 
-  message-service:
-    build:
-      context: ./message-service
-      dockerfile: Dockerfile
-    ports:
-      - "5002:5000"
-    environment:
-      - DATABASE_URL=sqlite:///messages.db
-    networks:
-      - app-network
+  # message-service:
+  #   build:
+  #     context: ./message-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5002:5000"
+  #   environment:
+  #     - DATABASE_URL=sqlite:///messages.db
+  #   networks:
+  #     - app-network
 
-  feed-service:
-    build:
-      context: ./feed-service
-      dockerfile: Dockerfile
-    ports:
-      - "5003:5000"
-    networks:
-      - app-network
+  # feed-service:
+  #   build:
+  #     context: ./feed-service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "5003:5000"
+  #   networks:
+  #     - app-network
 
   cli-service:
     build:
@@ -39,10 +37,10 @@ services:
     networks:
       - app-network
     entrypoint: [ "/app/cli-service" ]
-    depends_on:
-      - user-service
-      - message-service
-      - feed-service
+    # depends_on:
+    #   - user-service
+    #   - message-service
+    #   - feed-service
 
 networks:
   app-network:
