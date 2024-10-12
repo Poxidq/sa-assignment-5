@@ -20,7 +20,7 @@ services:
     ports:
       - "5002:5000"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/{POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database-service:5432/${POSTGRES_DB}
     depends_on:
       database-service:
         condition: service_healthy
