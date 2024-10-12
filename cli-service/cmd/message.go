@@ -30,29 +30,3 @@ var postCmd = &cobra.Command{
 		}
 	},
 }
-
-var likeCmd = &cobra.Command{
-	Use:   "like [messageID]",
-	Short: "Like a message by ID",
-	Args:  cobra.ExactArgs(1),
-	Run: func(cmd *cobra.Command, args []string) {
-		messageID := args[0]
-		response, error := internal.LikeMessage(messageID)
-
-		if error != nil {
-			fmt.Printf("Cannot register user.\n")
-			panic(error)
-		}
-
-		if response.StatusCode == 200 {
-			fmt.Printf("Message '%s' liked successfully.\n", messageID)
-		} else {
-			fmt.Printf("Failed to like message '%s'.\n", messageID)
-		}
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(postCmd)
-	rootCmd.AddCommand(likeCmd)
-}

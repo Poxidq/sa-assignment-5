@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"cli-service/internal"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"twitter-cli/internal"
 
 	"github.com/spf13/cobra"
 )
