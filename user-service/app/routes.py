@@ -5,7 +5,7 @@ from .models import User
 
 app = FastAPI()
 
-@app.post("/users/register", status_code=201)
+@app.post("/register", status_code=201)
 def register_user(username: str, db: Session = Depends(get_db)):
     # Check if user exists
     existing_user = db.query(User).filter(User.username == username).first()
@@ -16,19 +16,19 @@ def register_user(username: str, db: Session = Depends(get_db)):
     user = User(username=username)
     db.add(user)
     db.commit()
-    return {"message": "User registered successfully"}
+    return {"username": username}
 
-@app.post("/users/login")
+@app.post("/login")
 def login_user(username: str, db: Session = Depends(get_db)):
     # Check if user exists
     user = db.query(User).filter(User.username == username).first()
     if not user:
         raise HTTPException(status_code=400, detail="Invalid username")
     
-    return {"message": f"User {username} logged in successfully"}
+    return {"username": username}
 
-@app.get("/users/me")
-def get_me(username: str, db: Session = Depends(get_db)):
+@app.get("/users/{username}", status_code=200)
+def get_user(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     
     if not user:
