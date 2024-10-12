@@ -8,9 +8,12 @@ import (
 	"os"
 )
 
+// Updated Message struct to include ID and Likes
 type Message struct {
+	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Content  string `json:"content"`
+	Likes    int    `json:"likes"` // Added likes field
 }
 
 type APIClient struct {
@@ -75,3 +78,28 @@ func (client *APIClient) GetFeed() ([]Message, error) {
 
 	return messages, nil
 }
+
+func (client *APIClient) LoginUser(username string) (*http.Response, error) {
+    url := fmt.Sprintf("%s/users/%s", client.BaseURLUserManagement, username)
+    response, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+
+    return response, nil
+}
+
+func (client *APIClient) LikeMessage(messageID string) (*http.Response, error) {
+    url := fmt.Sprintf("%s/messages/%s/like", client.BaseURLMessages, messageID)
+    request, err := http.NewRequest(http.MethodPost, url, nil)
+    if err != nil {
+        return nil, fmt.Errorf("error creating POST request: %w", err)
+    }
+
+    clientHTTP := &http.Client{}
+    response, err := clientHTTP.Do(request)
+    if err != nil {
+        return nil, fmt.Errorf("error making POST request: %w", err)
+    }
+
+    return response, nil
