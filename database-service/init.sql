@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    content VARCHAR(400) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    likes INTEGER DEFAULT 0
+);
