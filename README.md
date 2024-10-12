@@ -14,27 +14,26 @@ Team members:
 ```bash
 git clone https://github.com/Poxidq/sa-assignment-5
 cd sa-assignment-5
-docker compose up -d --build
 
+docker ps
+docker compose up -d --build 
+docker-compose run --rm cli-service help
+docker-compose run --rm cli-service register test 
 # CLI commands
-docker-compose run cli-service -h
-Usage:
-  cli-service [command]
+# docker-compose run cli-service -h
+# Usage:
+#   cli-service [command]
 
-Available Commands:
-  completion  Generate the autocompletion script for the specified shell
-  feed        Get the latest 10 messages
-  help        Help about any command
-  like        Like a message by ID
-  post        Post a new message
-  register    Register a new user
+# Available Commands:
+#   completion  Generate the autocompletion script for the specified shell
+#   feed        Get the latest 10 messages
+#   help        Help about any command
+#   like        Like a message by ID
+#   post        Post a new message
+#   register    Register a new user
 
-Flags:
-  -h, --help   help for cli-service
+# Flags:
+#   -h, --help   help for cli-service
 
-Use "cli-service [command] --help" for more information about a command.
-
-
-# OR 
-docker exec -it <cli-service-container-id> /bin/sh
+# Use "cli-service [command] --help" for more information about a command.
 ```
