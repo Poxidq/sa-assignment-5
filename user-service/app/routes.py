@@ -1,11 +1,12 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from .database import get_db
 from .models import User
 
-app = FastAPI()
+# Use APIRouter instead of FastAPI app
+router = APIRouter()
 
-@app.post("/register", status_code=201)
+@router.post("/register", status_code=201)
 def register_user(username: str, db: Session = Depends(get_db)):
     # Check if user exists
     existing_user = db.query(User).filter(User.username == username).first()
@@ -18,7 +19,7 @@ def register_user(username: str, db: Session = Depends(get_db)):
     db.commit()
     return {"username": username}
 
-@app.post("/login")
+@router.post("/login")
 def login_user(username: str, db: Session = Depends(get_db)):
     # Check if user exists
     user = db.query(User).filter(User.username == username).first()
@@ -27,7 +28,7 @@ def login_user(username: str, db: Session = Depends(get_db)):
     
     return {"username": username}
 
-@app.get("/users/{username}", status_code=200)
+@router.get("/users/{username}", status_code=200)
 def get_user(username: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == username).first()
     
